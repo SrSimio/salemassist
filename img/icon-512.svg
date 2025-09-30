@@ -1,0 +1,78 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="fireGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#f7931e;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d1810;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="moonGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#fff8dc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd700;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="512" height="512" rx="64" fill="url(#bgGradient)"/>
+  
+  <!-- Estrellas -->
+  <circle cx="100" cy="80" r="2" fill="#ffd700" opacity="0.8"/>
+  <circle cx="150" cy="60" r="1.5" fill="#f4f4f4" opacity="0.6"/>
+  <circle cx="200" cy="90" r="1" fill="#ffd700" opacity="0.7"/>
+  <circle cx="350" cy="70" r="2" fill="#f4f4f4" opacity="0.5"/>
+  <circle cx="400" cy="100" r="1.5" fill="#ffd700" opacity="0.8"/>
+  <circle cx="450" cy="85" r="1" fill="#f4f4f4" opacity="0.6"/>
+  
+  <!-- Luna -->
+  <circle cx="400" cy="112" r="50" fill="url(#moonGradient)" opacity="0.9"/>
+  <circle cx="385" cy="100" r="8" fill="#1a1a1a" opacity="0.3"/>
+  <circle cx="410" cy="125" r="5" fill="#1a1a1a" opacity="0.2"/>
+  <circle cx="395" cy="130" r="3" fill="#1a1a1a" opacity="0.25"/>
+  
+  <!-- Montañas de fondo -->
+  <polygon points="0,320 160,200 320,260 512,180 512,512 0,512" fill="#2d1810" opacity="0.7"/>
+  <polygon points="0,350 120,280 280,300 450,250 512,280 512,512 0,512" fill="#1a1a1a" opacity="0.5"/>
+  
+  <!-- Hoguera base -->
+  <ellipse cx="256" cy="420" rx="60" ry="20" fill="#8B4513"/>
+  <ellipse cx="256" cy="415" rx="50" ry="15" fill="#654321"/>
+  
+  <!-- Troncos -->
+  <rect x="220" y="400" width="72" height="8" rx="4" fill="#8B4513" transform="rotate(-10 256 404)"/>
+  <rect x="220" y="410" width="72" height="8" rx="4" fill="#654321" transform="rotate(10 256 414)"/>
+  <rect x="230" y="405" width="52" height="6" rx="3" fill="#8B4513"/>
+  
+  <!-- Llamas principales -->
+  <path d="M256 420 Q230 380 240 340 Q250 320 256 300 Q262 320 272 340 Q282 380 256 420" fill="url(#fireGradient)"/>
+  <path d="M220 410 Q200 380 210 350 Q218 335 220 320 Q222 335 228 350 Q235 380 220 410" fill="url(#fireGradient)" opacity="0.9"/>
+  <path d="M292 410 Q312 380 302 350 Q294 335 292 320 Q290 335 284 350 Q277 380 292 410" fill="url(#fireGradient)" opacity="0.9"/>
+  
+  <!-- Llamas secundarias -->
+  <path d="M200 405 Q185 385 190 365 Q195 355 196 345 Q197 355 201 365 Q205 385 200 405" fill="url(#fireGradient)" opacity="0.7"/>
+  <path d="M312 405 Q327 385 322 365 Q317 355 316 345 Q315 355 311 365 Q307 385 312 405" fill="url(#fireGradient)" opacity="0.7"/>
+  
+  <!-- Chispas -->
+  <circle cx="180" cy="280" r="3" fill="#ffd700" opacity="0.9"/>
+  <circle cx="330" cy="290" r="2.5" fill="#ff6b35" opacity="0.8"/>
+  <circle cx="210" cy="250" r="2" fill="#ffd700" opacity="0.7"/>
+  <circle cx="300" cy="260" r="2" fill="#ff6b35" opacity="0.6"/>
+  <circle cx="240" cy="240" r="1.5" fill="#ffd700" opacity="0.8"/>
+  <circle cx="280" cy="245" r="1.5" fill="#ff6b35" opacity="0.7"/>
+  <circle cx="190" cy="300" r="1" fill="#ffd700" opacity="0.6"/>
+  <circle cx="320" cy="310" r="1" fill="#ff6b35" opacity="0.5"/>
+  
+  <!-- Texto Salem -->
+  <text x="256" y="180" font-family="serif" font-size="64" font-weight="bold" text-anchor="middle" fill="#f4f4f4" stroke="#8B4513" stroke-width="2">SALEM</text>
+  
+  <!-- Subtítulo -->
+  <text x="256" y="220" font-family="serif" font-size="24" text-anchor="middle" fill="#cccccc">Noche de Brujas</text>
+  
+  <!-- Decoración adicional -->
+  <path d="M150 200 Q160 190 170 200 Q160 210 150 200" fill="#8B4513" opacity="0.6"/>
+  <path d="M342 200 Q352 190 362 200 Q352 210 342 200" fill="#8B4513" opacity="0.6"/>
+</svg>

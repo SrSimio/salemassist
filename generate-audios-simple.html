@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Audios - Salem Noche</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #ff6b35;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .audio-item {
+            background: #3d3d3d;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b35;
+        }
+        .audio-name {
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+        .audio-text {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #2d5a2d;
+            color: #90ee90;
+        }
+        .status.error {
+            background: #5a2d2d;
+            color: #ff9090;
+        }
+        .status.info {
+            background: #2d4a5a;
+            color: #90d0ee;
+        }
+        .progress {
+            background: #444;
+            border-radius: 10px;
+            padding: 3px;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            background: #ff6b35;
+            height: 20px;
+            border-radius: 7px;
+            width: 0%;
+            transition: width 0.3s ease;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        .instructions {
+            background: #2d4a5a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .download-all {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .download-all button {
+            font-size: 18px;
+            padding: 15px 30px;
+            background: #28a745;
+        }
+        .download-all button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Generador de Audios - Salem Noche</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instrucciones:</h3>
+            <p>1. Haz clic en "Generar Audio" para cada frase</p>
+            <p>2. Se reproducirá la voz y se descargará automáticamente</p>
+            <p>3. O usa "Descargar Todos" para generar todos de una vez</p>
+            <p>4. Los archivos se guardarán en tu carpeta de Descargas</p>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <div class="download-all">
+            <button onclick="generateAllAudios()" id="generateAllBtn">🎵 Descargar Todos los Audios</button>
+        </div>
+
+        <div id="audioList"></div>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const audioConfig = {
+            'night-start.mp3': 'La noche ha comenzado',
+            'witch-phase.mp3': 'Fase de brujas',
+            'sheriff-phase.mp3': 'Fase del alguacil',
+            'confession-time.mp3': 'Tiempo de confesiones',
+            'day-start.mp3': 'El día ha comenzado',
+            'villagers-win.mp3': 'Los aldeanos han ganado',
+            'witches-win.mp3': 'Las brujas han ganado',
+            'time-warning.mp3': 'Quedan 30 segundos',
+            'vote-time.mp3': 'Tiempo de votación'
+        };
+
+        let generatedCount = 0;
+        const totalCount = Object.keys(audioConfig).length;
+
+        function updateProgress() {
+            const percentage = Math.round((generatedCount / totalCount) * 100);
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function generateAudio(filename, text) {
+            return new Promise((resolve, reject) => {
+                showStatus(`🎵 Generando: ${filename} - "${text}"`, 'info');
+                
+                // Configurar Web Speech API
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                // Buscar voz en español
+                const voices = speechSynthesis.getVoices();
+                const spanishVoice = voices.find(voice => 
+                    voice.lang.includes('es') || voice.name.includes('Spanish')
+                );
+                if (spanishVoice) {
+                    utterance.voice = spanishVoice;
+                }
+                
+                // Crear contexto de audio para grabación
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const mediaStreamDestination = audioContext.createMediaStreamDestination();
+                
+                // Crear MediaRecorder sin necesidad de getUserMedia
+                const mediaRecorder = new MediaRecorder(mediaStreamDestination.stream);
+                const audioChunks = [];
+                
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const url = URL.createObjectURL(audioBlob);
+                    
+                    // Crear enlace de descarga
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    generatedCount++;
+                    updateProgress();
+                    showStatus(`✅ Completado: ${filename}`, 'success');
+                    resolve();
+                };
+                
+                // Iniciar grabación
+                mediaRecorder.start();
+                
+                // Configurar eventos de speech
+                utterance.onend = () => {
+                    setTimeout(() => {
+                        mediaRecorder.stop();
+                    }, 500);
+                };
+                
+                utterance.onerror = (error) => {
+                    mediaRecorder.stop();
+                    showStatus(`❌ Error en ${filename}: ${error.error}`, 'error');
+                    reject(error);
+                };
+                
+                // Reproducir
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        async function generateAllAudios() {
+            const btn = document.getElementById('generateAllBtn');
+            btn.disabled = true;
+            btn.textContent = '🔄 Generando...';
+            
+            generatedCount = 0;
+            updateProgress();
+            
+            try {
+                for (const [filename, text] of Object.entries(audioConfig)) {
+                    await generateAudio(filename, text);
+                    // Pausa entre audios
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+                
+                showStatus('🎉 ¡Todos los audios generados exitosamente!', 'success');
+            } catch (error) {
+                showStatus(`❌ Error durante la generación: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🎵 Descargar Todos los Audios';
+            }
+        }
+
+        function generateSingleAudio(filename, text, buttonElement) {
+            buttonElement.disabled = true;
+            buttonElement.textContent = '🔄 Generando...';
+            
+            generateAudio(filename, text)
+                .then(() => {
+                    buttonElement.textContent = '✅ Completado';
+                    setTimeout(() => {
+                        buttonElement.textContent = 'Generar Audio';
+                        buttonElement.disabled = false;
+                    }, 2000);
+                })
+                .catch(() => {
+                    buttonElement.textContent = '❌ Error';
+                    setTimeout(() => {
+                        buttonElement.textContent = 'Generar Audio';
+                        buttonElement.disabled = false;
+                    }, 2000);
+                });
+        }
+
+        // Crear lista de audios
+        function createAudioList() {
+            const audioList = document.getElementById('audioList');
+            
+            Object.entries(audioConfig).forEach(([filename, text]) => {
+                const audioItem = document.createElement('div');
+                audioItem.className = 'audio-item';
+                audioItem.innerHTML = `
+                    <div class="audio-name">${filename}</div>
+                    <div class="audio-text">"${text}"</div>
+                    <button onclick="generateSingleAudio('${filename}', '${text}', this)">Generar Audio</button>
+                    <button onclick="testVoice('${text}')">🔊 Probar Voz</button>
+                `;
+                audioList.appendChild(audioItem);
+            });
+        }
+
+        function testVoice(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            const voices = speechSynthesis.getVoices();
+            const spanishVoice = voices.find(voice => 
+                voice.lang.includes('es') || voice.name.includes('Spanish')
+            );
+            if (spanishVoice) {
+                utterance.voice = spanishVoice;
+            }
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // Esperar a que las voces estén disponibles
+        function waitForVoices() {
+            return new Promise(resolve => {
+                if (speechSynthesis.getVoices().length > 0) {
+                    resolve();
+                } else {
+                    speechSynthesis.onvoiceschanged = () => {
+                        if (speechSynthesis.getVoices().length > 0) {
+                            resolve();
+                        }
+                    };
+                }
+            });
+        }
+
+        // Inicializar cuando la página esté lista
+        window.addEventListener('load', async () => {
+            await waitForVoices();
+            createAudioList();
+            showStatus('✅ Listo para generar audios', 'success');
+        });
+    </script>
+</body>
+</html>

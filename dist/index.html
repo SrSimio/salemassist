@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salem - Juego de Brujas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="fire-animation">
+                🔥
+            </div>
+            <div class="salem-title">SALEM</div>
+            <div class="bottom-info">
+                <div class="studio-brand">Una app de SimioStudio</div>
+                <div class="copyright">© 2024 SimioStudio. Todos los derechos reservados.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display: none;">
+        <!-- Fondo de llamas animadas -->
+        <div class="flames-bg"></div>
+        
+        <!-- Header con título temático -->
+        <header class="game-header">
+            <h1 class="main-title">🔥 SALEM 🔥</h1>
+            <p class="subtitle">Los Juicios de las Brujas</p>
+        </header>
+
+        <!-- Fase de configuración -->
+        <div id="setup-phase" class="game-phase active">
+            <div class="phase-container">
+                <h2 class="phase-title">⚰️ Convoca a los Aldeanos ⚰️</h2>
+                
+                <div class="input-section">
+                    <div class="input-group">
+                        <input type="text" id="name-input" placeholder="Nombre del aldeano..." maxlength="20">
+                        <button id="add-name-btn" class="btn btn-primary">
+                            <span>🕯️ Invocar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="players-section">
+                    <h3 class="section-title">👥 Aldeanos Convocados</h3>
+                    <div id="names-list" class="names-grid"></div>
+                    <div class="player-count">
+                        <span id="player-count">0</span> / 12 aldeanos
+                    </div>
+                </div>
+
+                <div class="timer-config-section">
+                    <h3 class="section-title">⏰ Configuración de Tiempo</h3>
+                    <div class="timer-controls">
+                        <div class="stage-timer-config">
+                            <h4 class="config-subtitle">⏱️ Timers de Etapas</h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="stage-timer-enabled" checked>
+                                <label for="stage-timer-enabled">Activar timers en las etapas del juego</label>
+                            </div>
+                            <div class="timer-input-group" id="timer-duration-group">
+                                <label for="night-duration">Duración por etapa (segundos):</label>
+                                <input type="number" id="night-duration" min="30" max="300" value="60" class="timer-input">
+                            </div>
+                            <div class="timer-description">
+                                Si está activado, cada fase (brujas, alguacil, confesiones) tendrá un tiempo límite. Si está desactivado, las etapas no tendrán límite de tiempo.
+                            </div>
+                        </div>
+                        
+                        <div class="voice-config">
+                            <h4 class="config-subtitle">🔊 Sistema de Voces</h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="voice-enabled" checked>
+                                <label for="voice-enabled">Activar narración por voz</label>
+                            </div>
+                            <div class="voice-controls" id="voice-controls-group">
+                                <div class="volume-control">
+                                    <label for="voice-volume">Volumen de voz:</label>
+                                    <input type="range" id="voice-volume" min="0" max="100" value="70" class="volume-slider">
+                                    <span id="volume-display">70%</span>
+                                </div>
+                                <div class="speed-control">
+                                    <label for="voice-speed">Velocidad:</label>
+                                    <select id="voice-speed" class="speed-select">
+                                        <option value="0.8">Lenta</option>
+                                        <option value="1" selected>Normal</option>
+                                        <option value="1.2">Rápida</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="voice-description">
+                                La voz narrará las transiciones del juego: "Cierren los ojos", "Abran los ojos las brujas", etc. Compatible con navegadores y APK.
+                            </div>
+                        </div>
+                        
+                        <div class="auto-timer-config">
+                            <h4 class="config-subtitle">🔄 Transiciones Automáticas</h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="auto-timer-enabled" checked>
+                                <label for="auto-timer-enabled">Activar timers automáticos de 5 segundos en transiciones</label>
+                            </div>
+                            <div class="auto-timer-description">
+                                Si está activado, las pantallas de transición avanzarán automáticamente después de 5 segundos. Si está desactivado, será necesario presionar el botón para continuar.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <button id="start-game-btn" class="btn btn-start" disabled>
+                        🌙 Comenzar los Juicios
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase del juego -->
+        <div id="game-phase" class="game-phase">
+            <div class="phase-container">
+                <div id="phase-indicator" class="phase-indicator"></div>
+                
+                <div id="role-assignment" class="role-section">
+                    <h2 class="phase-title">🎭 Asignación de Roles</h2>
+                    <div id="roles-display" class="roles-display"></div>
+                    <button id="continue-btn" class="btn btn-primary">Continuar</button>
+                </div>
+
+                <div id="sheriff-selection" class="sheriff-section" style="display: none;">
+                    <h2 class="phase-title">⚖️ Elección del Sheriff</h2>
+                    <p class="instruction">Los aldeanos deben elegir un Sheriff para liderar los juicios</p>
+                    <div id="sheriff-candidates" class="candidates-grid"></div>
+                    <button id="confirm-sheriff-btn" class="btn btn-primary" style="display: none;">
+                        Confirmar Sheriff
+                    </button>
+                </div>
+
+                <div id="confession-phase" class="confession-section" style="display: none;">
+                    <h2 class="phase-title">🕯️ Fase de Confesión</h2>
+                    <div id="confession-content" class="confession-content"></div>
+                </div>
+
+                <div id="results-phase" class="results-section" style="display: none;">
+                    <h2 class="phase-title">⚱️ Resultados de la Noche</h2>
+                    <div id="results-content" class="results-content"></div>
+                    <div class="results-controls">
+                        <button id="new-night-btn" class="btn btn-primary">🌙 Nueva Noche</button>
+                        <button id="end-game-btn" class="btn btn-secondary">🏁 Terminar Juego</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles globales -->
+        <div class="global-controls">
+            <button id="reset-game-btn" class="btn btn-reset">🔄 Reiniciar</button>
+            <div id="timer-display" class="timer-display" style="display: none;">
+                <span id="timer-text">⏰ 00:00</span>
+            </div>
+        </div>
+
+        <!-- Modal para inmunidad -->
+        <div id="immunity-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>🛡️ Inmunidad Activada</h3>
+                <p id="immunity-message"></p>
+                <button id="immunity-ok-btn" class="btn btn-primary">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="js/hybrid-audio-manager.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="fireGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f7931e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="192" height="192" rx="24" fill="url(#bgGradient)"/>
+  
+  <!-- Luna -->
+  <circle cx="150" cy="42" r="20" fill="#ffd700" opacity="0.8"/>
+  
+  <!-- Montañas de fondo -->
+  <polygon points="0,120 60,80 120,100 192,70 192,192 0,192" fill="#2d1810" opacity="0.6"/>
+  
+  <!-- Hoguera base -->
+  <ellipse cx="96" cy="160" rx="25" ry="8" fill="#8B4513"/>
+  
+  <!-- Llamas -->
+  <path d="M96 160 Q85 140 90 120 Q95 110 96 100 Q97 110 102 120 Q107 140 96 160" fill="url(#fireGradient)"/>
+  <path d="M85 155 Q78 140 82 125 Q86 118 87 110 Q88 118 91 125 Q94 140 85 155" fill="url(#fireGradient)" opacity="0.8"/>
+  <path d="M107 155 Q114 140 110 125 Q106 118 105 110 Q104 118 101 125 Q98 140 107 155" fill="url(#fireGradient)" opacity="0.8"/>
+  
+  <!-- Chispas -->
+  <circle cx="75" cy="105" r="2" fill="#ffd700" opacity="0.9"/>
+  <circle cx="118" cy="108" r="1.5" fill="#ff6b35" opacity="0.8"/>
+  <circle cx="88" cy="95" r="1" fill="#ffd700" opacity="0.7"/>
+  <circle cx="110" cy="98" r="1" fill="#ff6b35" opacity="0.6"/>
+  
+  <!-- Texto Salem -->
+  <text x="96" y="50" font-family="serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#f4f4f4">SALEM</text>
+  
+  <!-- Subtítulo -->
+  <text x="96" y="70" font-family="serif" font-size="10" text-anchor="middle" fill="#cccccc">Noche de Brujas</text>
+</svg>

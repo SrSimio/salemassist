@@ -1,0 +1,60 @@
+{
+  "name": "Salem - Juego de Brujas",
+  "short_name": "Salem",
+  "description": "Juego de roles Salem - Una noche de misterio y traición",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#16213e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "img/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "img/logo.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "features": [
+    "cross-origin-isolated"
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Nuevo Juego",
+      "short_name": "Jugar",
+      "description": "Iniciar una nueva partida de Salem",
+      "url": "/?action=new-game",
+      "icons": [
+        {
+          "src": "img/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
